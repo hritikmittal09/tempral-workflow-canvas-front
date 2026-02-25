@@ -1,42 +1,13 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { getData } from './service/Getwork'
+import FlowCanvas from './Component/FlowCanvas';
+import Sidebar from './Component/Sidebar';
 
 function App() {
-  const [data, setdata] = useState<any>()
-  const handleData = async ()=>{
-    const res =   await getData()
-    setdata(res);
-    
-
-  }
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() =>handleData() }>
-          count is {data}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="flex h-screen">
+      <Sidebar />
+      <FlowCanvas />
+    </div>
+  );
 }
 
-export default App
+export default App;
