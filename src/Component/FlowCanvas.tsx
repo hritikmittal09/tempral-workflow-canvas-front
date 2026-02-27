@@ -12,7 +12,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css';
 
 import TriggerNode from '../Component/nodes/TriggerNode';
-import ApiActionNode from "../Component/nodes/ApiActionNode";
+import ApiActionNode from '../Component/nodes/ApiActionNode';
 import {
   startWorkflow,
   getWorkflowStatus,
@@ -37,17 +37,20 @@ const FlowCanvas = () => {
   const [result, setResult] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 
+  // 🔗 CONNECT NODES
   const onConnect = useCallback(
     (params: Edge | Connection) =>
       setEdges((eds) => addEdge(params, eds)),
     []
   );
 
+  // 📥 DRAG OVER
   const onDragOver = (event: React.DragEvent) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
   };
 
+  // 📦 DROP NODE
   const onDrop = (event: React.DragEvent) => {
     event.preventDefault();
     const type = event.dataTransfer.getData('application/reactflow');
@@ -81,7 +84,17 @@ const FlowCanvas = () => {
     }
   };
 
-  // 🔁 POLL STATUS
+  // 🔄 RESET WORKFLOW & CANVAS
+  const handleReset = () => {
+    setNodes([]);
+    setEdges([]);
+    setWorkflowId(null);
+    setStatus('IDLE');
+    setResult(null);
+    setLoading(false);
+  };
+
+  // 🔁 POLL WORKFLOW STATUS
   useEffect(() => {
     if (!workflowId) return;
 
@@ -123,6 +136,14 @@ const FlowCanvas = () => {
           {loading ? 'Running...' : 'Run'}
         </button>
 
+        <button
+          className="btn btn-outline btn-error"
+          onClick={handleReset}
+          disabled={loading}
+        >
+          Reset
+        </button>
+
         <span
           className={`badge ${
             status === 'RUNNING'
@@ -138,7 +159,7 @@ const FlowCanvas = () => {
         </span>
       </div>
 
-      {/* RESULT */}
+      {/* WORKFLOW RESULT */}
       {result && (
         <div className="absolute bottom-4 right-4 w-96 z-10">
           <div className="card bg-base-200 shadow">
